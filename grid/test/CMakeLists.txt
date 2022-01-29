@@ -16,6 +16,7 @@ add_executable(
 )
 target_link_libraries(
   grid_test
+  grid
   gtest_main
 )
 
