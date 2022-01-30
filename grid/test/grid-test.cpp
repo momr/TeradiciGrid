@@ -48,11 +48,15 @@ class GridTestFixture : public ::testing::Test {
  protected:
   void SetUp() override {
     // To write bytes to a file in bash
-    // system(R"(echo -n -e \\xff\\x11\\x12 > testInputfile.bin)");
+    // echo -n -e '\xff\x11\x12' > testInputfile.bin
+    std::ofstream output("testInputfile.bin", std::ios::binary);
+    unsigned char buffer[3] = {0xff, 0x11, 0x12};
+    output.write((char *) buffer, sizeof(buffer));
+    output.close();
   }
 
   void TearDown() override {
-    // system("rm -f testInputfile.bin");
+    system("rm -f testInputfile.bin");
   }
 };
 
