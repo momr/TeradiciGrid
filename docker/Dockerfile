@@ -18,4 +18,6 @@ RUN mkdir -p build-docker
 
 WORKDIR /app/build-docker
 RUN cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . -- -j4
-CMD ["ctest"]
+COPY ./docker/testInputfile.bin .
+ENTRYPOINT ["grid-cli-app/grid-cli"]
+CMD ["-f", "testInputfile.bin"]
