@@ -47,8 +47,6 @@ TEST(GridTest, GridClassUpdate) {
 class GridTestFixture : public ::testing::Test {
  protected:
   void SetUp() override {
-    // To write bytes to a file in bash
-    // echo -n -e '\xff\x11\x12' > testInputfile.bin
     std::ofstream output("testInputfile.bin", std::ios::binary);
     unsigned char buffer[3] = {0xff, 0x11, 0x12};
     output.write((char *) buffer, sizeof(buffer));
