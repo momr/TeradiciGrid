@@ -1,6 +1,8 @@
 #ifndef GRID_H
 #define GRID_H
 
+// Author: Medhat Omr <medhat.omr@gmail.com>
+
 #include <array>
 #include <iostream>
 
