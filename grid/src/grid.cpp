@@ -66,6 +66,18 @@ void Grid::updateDiagonal(unsigned short row, unsigned short col) {
     }
 }
 
+unsigned short Grid::countZeros(){
+    int count=0;
+    for (auto const v : gridData){
+        auto tmp=v;
+        while(tmp){
+            tmp=tmp&(tmp-1);  // jump to first bit == 1
+            ++count;
+        }
+    }
+    return MAX_NUM_ZEROS - count;
+}
+
 std::ostream& operator<<(std::ostream& os, const Grid& grid)
 {
     uint16_t high, low;

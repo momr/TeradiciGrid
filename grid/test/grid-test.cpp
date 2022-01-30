@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
+#include <fstream>
+#include <iterator>
 #include <vector>
 
 using namespace TeradiciGrid;
@@ -23,7 +25,7 @@ TEST(GridTest, byte2rowcol) {
     }
 }
 
-TEST(GridTest, GridClass) {
+TEST(GridTest, GridClassUpdate) {
     Grid grid;
     cout << grid << endl;
 
@@ -40,4 +42,42 @@ TEST(GridTest, GridClass) {
         cout << grid << endl << endl;
         ++i;
     }
+}
+
+class GridTestFixture : public ::testing::Test {
+ protected:
+  void SetUp() override {
+    // To write bytes to a file in bash
+    // system(R"(echo -n -e \\xff\\x11\\x12 > testInputfile.bin)");
+  }
+
+  void TearDown() override {
+    // system("rm -f testInputfile.bin");
+  }
+};
+
+TEST_F(GridTestFixture, GridClassCountZeros) {
+    std::ifstream input("testInputfile.bin", std::ios::binary);
+
+    std::vector<char> inputIndex(
+         (std::istreambuf_iterator<char>(input)),
+         (std::istreambuf_iterator<char>()));
+
+    input.close();
+
+    Grid grid;
+    // cout << grid << endl;
+
+    // vector<unsigned short> inputIndex = {0x00, 0xff, 0x11, 0x12};
+    // // vector<std::pair<unsigned short, unsigned short> > expectedResult = {{15,15}, {1,1}, {1,2}};
+
+    int i = 0;
+    for (auto const v : inputIndex){
+        cout << "input byte: " << std::hex << v << endl;
+        grid.updateGrid(v);
+        cout << grid << endl << endl;
+        ++i;
+    }
+
+    EXPECT_EQ(grid.getNumOfZeros(), 200);
 }

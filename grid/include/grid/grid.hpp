@@ -25,7 +25,7 @@ public:
     virtual ~Grid() = default;
 
     void updateGrid(unsigned short inputByte);
-    unsigned short getNumOfZeros() {return numOfZeros;};
+    unsigned short getNumOfZeros() {return countZeros();};
     friend std::ostream& operator<<(std::ostream& os, const Grid& grid);
 
 
@@ -36,7 +36,7 @@ private:
     void updateDiagonal(unsigned short row, unsigned short col);
     unsigned short countZeros();
     std::array<uint8_t, 32> gridData;
-    unsigned short numOfZeros = 256;
+    unsigned short const MAX_NUM_ZEROS = 256;
     unsigned short const NUM_OF_ROWS = 16;
     unsigned short const NUM_OF_COLS = 16;
 };
