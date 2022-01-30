@@ -19,7 +19,6 @@ bool Grid::getBitValue(unsigned short row, unsigned short col){
 void Grid::updateGrid(unsigned short inputByte){
     unsigned short row, col;
     byte2rowcol(inputByte, row, col);
-    std::cout << "row: " << row << " col: " << col << std::endl;
 
     auto bitValue = getBitValue(row, col);
     if(bitValue){

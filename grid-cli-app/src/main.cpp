@@ -1,24 +1,54 @@
+#include "cxxopts.hpp"
+#include "grid/grid.hpp"
+
 #include <iostream>
-#include <csignal>
-#include <thread>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 
-bool shutDown = false;
+void processInputFile(std::string &filename){
+    std::ifstream input(filename, std::ios::binary);
 
-void OnSigInt(int) {
-    shutDown = true;
-}
+    std::vector<char> inputIndex(
+         (std::istreambuf_iterator<char>(input)),
+         (std::istreambuf_iterator<char>()));
 
-int someFunc(){
-    while (!shutDown) {
-        std::cout << "Hello World!" << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    input.close();
+
+    TeradiciGrid::Grid grid;
+
+    for (auto const v : inputIndex){
+        grid.updateGrid(v);
     }
-    return EXIT_SUCCESS;
+
+    std::cout << grid.getNumOfZeros() << std::endl;
 }
-int main(){
-    auto const previousInteruptHandler = signal(SIGINT, OnSigInt);
-    auto const returnValue = someFunc();
-    (void)signal(SIGINT, previousInteruptHandler);
-    std::cout << "Good Bye!" << std::endl;
+
+int main(int argc, char * argv[]){
+    cxxopts::Options options("grid-cli -f testInputfile.bin", "This is a driver CLI app for the Teradici Grid lib");
+
+        options.add_options()
+    ("f,file", "Input Binary File name", cxxopts::value<std::string>())
+    ("h,help", "Print this help message")
+    ;
+    auto result = options.parse(argc, argv);
+
+    if (result.count("help"))
+    {
+      std::cout << options.help() << std::endl;
+      exit(0);
+    }
+
+    auto inputFileName = result["file"].as<std::string>();
+
+    if (result.count("file"))
+    {
+        processInputFile(inputFileName);
+    } else {
+        std::cout << options.help() << std::endl;
+        exit(0);
+    }
+
+    return 0;
 }
