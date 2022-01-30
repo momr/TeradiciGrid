@@ -8,7 +8,7 @@ void byte2rowcol(unsigned short inputIndex, unsigned short &row, unsigned short 
     col = ((1 << NUM_OF_BITS) - 1) & inputIndex;
 }
 
-bool Grid::getBitValue(unsigned short row, unsigned short col){
+bool Grid::getBitValue(unsigned short row, unsigned short col) const {
     if(col < 8){ // low
         return gridData[row*2] & (1 << col);
     } else { // high
